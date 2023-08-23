@@ -1,0 +1,47 @@
+select * from dbo.Matches
+select * from dbo.Participants
+
+delete from dbo.Matches 
+where matchID not in ('NA1_0000000000', 'NA1_0000000001', 'NA1_0000000002')
+
+delete from dbo.Participants 
+where matchID not in ('NA1_0000000000', 'NA1_0000000001', 'NA1_0000000002')
+
+declare @participant1 varchar(255) = 'AYD Anarchy';
+declare @participant2 varchar(255) = 'AYD Trash';
+
+select m.*
+from dbo.Matches m
+inner join Participants p on m.matchID = p.matchID
+where p.participant = @participant1;
+
+select * 
+from dbo.Participants
+where matchID in (select matchID from dbo.Participants where participant = @participant1)
+order by matchID ASC;
+
+SELECT m.*
+FROM dbo.Matches m
+INNER JOIN Participants p1 ON m.matchID = p1.matchID AND p1.participant = @participant1
+INNER JOIN Participants p2 ON m.matchID = p2.matchID AND p2.participant = @participant2
+ORDER BY matchID ASC;
+
+SELECT p.*
+FROM dbo.Participants p
+INNER JOIN (SELECT DISTINCT matchID FROM dbo.Participants WHERE participant = @participant1) p1 ON p.matchID = p1.matchID
+INNER JOIN (SELECT DISTINCT matchID FROM dbo.Participants WHERE participant = @participant2) p2 ON p.matchID = p2.matchID
+ORDER BY p.matchID ASC;
+
+select p1.matchID, p1.participant as particpant1, p2.participant as participant2
+from Participants p1
+inner join Participants p2 on p1.matchID = p2.matchID
+where p1.participant = @participant1 and p2.participant = @participant2 and p1.team = p2.team;
+
+SELECT p1.matchID, p1.participant AS participant1, p2.participant AS participant2
+FROM Participants p1
+INNER JOIN Participants p2 ON p1.matchID = p2.matchID
+INNER JOIN Matches m ON p1.matchID = m.matchID
+WHERE p1.participant = @participant1 
+    AND p2.participant = @participant2 
+    AND p1.team = p2.team
+    AND p1.team = m.matchresult;
