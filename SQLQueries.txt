@@ -7,41 +7,296 @@ where matchID not in ('NA1_0000000000', 'NA1_0000000001', 'NA1_0000000002')
 delete from dbo.Participants 
 where matchID not in ('NA1_0000000000', 'NA1_0000000001', 'NA1_0000000002')
 
+delete from dbo.Matches 
+where matchID = 'NA1_4808712278'
+
+delete from dbo.Participants 
+where matchID = 'NA1_4808712278'
+
+UPDATE dbo.Matches SET matchQueue = 420 WHERE matchID IN ('NA1_0000000000', 'NA1_0000000001', 'NA1_0000000002');
+
 declare @participant1 varchar(255) = 'AYD Anarchy';
 declare @participant2 varchar(255) = 'AYD Trash';
+
+SELECT AVG(p1.kda) AS avg_kda_p1, AVG(p2.kda) AS avg_kda_p2
+FROM Participants p1
+INNER JOIN Participants p2 ON p1.matchID = p2.matchID
+WHERE p1.summonerName = @participant1
+    AND p2.summonerName = @participant2
+    AND p1.teamID = p2.teamID
+GROUP BY 
+    p1.summonerName, 
+    p2.summonerName;
+
+
+
+SELECT 
+    p1.summonerName AS participant1, 
+    p2.summonerName AS participant2,
+    AVG(p1.kda) AS avg_kda_participant1,
+    AVG(p2.kda) AS avg_kda_participant2
+FROM Participants p1
+INNER JOIN Participants p2 ON p1.matchID = p2.matchID
+INNER JOIN Matches m ON p1.matchID = m.matchID
+WHERE 
+    p1.summonerName = @participant1
+    AND p2.summonerName = @participant2
+    AND p1.teamID = p2.teamID
+    AND p1.teamID = m.matchresult
+GROUP BY 
+    p1.summonerName, 
+    p2.summonerName;
+
 
 select m.*
 from dbo.Matches m
 inner join Participants p on m.matchID = p.matchID
-where p.participant = @participant1;
+where p.summonerName = @participant1;
+
+select AVG(kda) from dbo.Participants
+where summonerName = @participant1;
 
 select * 
 from dbo.Participants
-where matchID in (select matchID from dbo.Participants where participant = @participant1)
+where matchID in (select matchID from dbo.Participants where summonerName = @participant1)
 order by matchID ASC;
 
 SELECT m.*
 FROM dbo.Matches m
-INNER JOIN Participants p1 ON m.matchID = p1.matchID AND p1.participant = @participant1
-INNER JOIN Participants p2 ON m.matchID = p2.matchID AND p2.participant = @participant2
+INNER JOIN Participants p1 ON m.matchID = p1.matchID AND p1.summonerName = @participant1
+INNER JOIN Participants p2 ON m.matchID = p2.matchID AND p2.summonerName = @participant2
 ORDER BY matchID ASC;
 
 SELECT p.*
 FROM dbo.Participants p
-INNER JOIN (SELECT DISTINCT matchID FROM dbo.Participants WHERE participant = @participant1) p1 ON p.matchID = p1.matchID
-INNER JOIN (SELECT DISTINCT matchID FROM dbo.Participants WHERE participant = @participant2) p2 ON p.matchID = p2.matchID
+INNER JOIN (SELECT DISTINCT matchID FROM dbo.Participants WHERE summonerName = @participant1) p1 ON p.matchID = p1.matchID
+INNER JOIN (SELECT DISTINCT matchID FROM dbo.Participants WHERE summonerName = @participant2) p2 ON p.matchID = p2.matchID
 ORDER BY p.matchID ASC;
 
-select p1.matchID, p1.participant as particpant1, p2.participant as participant2
+select p1.matchID, p1.summonerName as particpant1, p2.summonerName as participant2
 from Participants p1
 inner join Participants p2 on p1.matchID = p2.matchID
-where p1.participant = @participant1 and p2.participant = @participant2 and p1.team = p2.team;
+where p1.summonerName = @participant1 and p2.summonerName = @participant2 and p1.teamID= p2.teamID;
 
-SELECT p1.matchID, p1.participant AS participant1, p2.participant AS participant2
+SELECT p1.matchID, p1.summonerName AS participant1, p2.summonerName AS participant2
 FROM Participants p1
 INNER JOIN Participants p2 ON p1.matchID = p2.matchID
 INNER JOIN Matches m ON p1.matchID = m.matchID
-WHERE p1.participant = @participant1 
-    AND p2.participant = @participant2 
-    AND p1.team = p2.team
-    AND p1.team = m.matchresult;
+WHERE p1.summonerName = @participant1 
+    AND p2.summonerName = @participant2 
+    AND p1.teamID = p2.teamID
+    AND p1.teamID = m.matchresult;
+
+
+
+declare @participant1 varchar(255) = 'AYD Anarchy';
+declare @participant2 varchar(255) = 'AYD Trash';
+
+SELECT 
+    p1.matchID, 
+    p1.summonerName AS participant1, 
+    p2.summonerName AS participant2,
+    p1.kda AS kda_p1,
+    p2.kda AS kda_p2
+FROM Participants p1
+INNER JOIN Participants p2 ON p1.matchID = p2.matchID
+INNER JOIN Matches m ON p1.matchID = m.matchID
+WHERE p1.summonerName = @participant1 
+    AND p2.summonerName = @participant2 
+    AND p1.teamID = p2.teamID
+
+
+SELECT 
+    p.matchID, 
+    p.summonerName, 
+    p.kda
+FROM Participants p
+INNER JOIN Matches m ON p.matchID = m.matchID
+WHERE p.summonerName IN (@participant1, @participant2)
+
+
+SELECT
+    m.matchID,
+    p1.summonerName AS participant1,
+    p2.summonerName AS participant2,
+    p1.kda AS kda_p1,
+    p2.kda AS kda_p2
+FROM Matches m
+INNER JOIN Participants p1 ON m.matchID = p1.matchID AND p1.summonerName = @participant1
+INNER JOIN Participants p2 ON m.matchID = p2.matchID AND p2.summonerName = @participant2
+
+
+declare @participant1 varchar(255) = 'AYD Anarchy';
+declare @participant2 varchar(255) = 'AYD Trash';
+
+SELECT 
+            p.summonerName,
+            AVG(p.killParticipation) as avg_kda
+        FROM Participants p
+        INNER JOIN Matches m ON p.matchID = m.matchID
+        WHERE p.summonerName IN (@participant1, @participant2)
+        GROUP BY p.summonerName
+		ORDER BY CASE WHEN p.summonerName = @participant1 THEN 2 ELSE 1 END;
+
+SELECT 
+    m.matchID,
+    MAX(CASE WHEN p.summonerName = @participant1 THEN p.killParticipation ELSE NULL END) AS killParticipation_p1,
+    MAX(CASE WHEN p.summonerName = @participant2 THEN p.killParticipation ELSE NULL END) AS killParticipation_p2
+FROM Participants p
+INNER JOIN Matches m ON p.matchID = m.matchID
+WHERE p.summonerName IN (@participant1, @participant2)
+GROUP BY m.matchID
+
+SELECT 
+    m.matchID,
+    MAX(CASE WHEN p.summonerName = @participant1 THEN p.killParticipation ELSE NULL END) AS killParticipation_p1,
+    MAX(CASE WHEN p.summonerName = @participant2 THEN p.killParticipation ELSE NULL END) AS killParticipation_p2
+FROM Participants p
+INNER JOIN Matches m ON p.matchID = m.matchID
+WHERE p.summonerName IN (@participant1, @participant2)
+GROUP BY m.matchID
+HAVING 
+    MAX(CASE WHEN p.summonerName = @participant1 THEN p.killParticipation ELSE NULL END) IS NOT NULL
+    AND MAX(CASE WHEN p.summonerName = @participant2 THEN p.killParticipation ELSE NULL END) IS NOT NULL;
+
+SELECT 
+    AVG(killParticipation_p1) AS avg_killParticipation_p1,
+    AVG(killParticipation_p2) AS avg_killParticipation_p2
+FROM (
+    SELECT 
+        m.matchID,
+        MAX(CASE WHEN p.summonerName = @participant1 THEN p.killParticipation ELSE NULL END) AS killParticipation_p1,
+        MAX(CASE WHEN p.summonerName = @participant2 THEN p.killParticipation ELSE NULL END) AS killParticipation_p2
+    FROM Participants p
+    INNER JOIN Matches m ON p.matchID = m.matchID
+    WHERE p.summonerName IN (@participant1, @participant2)
+    GROUP BY m.matchID
+    HAVING 
+        MAX(CASE WHEN p.summonerName = @participant1 THEN p.killParticipation ELSE NULL END) IS NOT NULL
+        AND MAX(CASE WHEN p.summonerName = @participant2 THEN p.killParticipation ELSE NULL END) IS NOT NULL
+) AS Subquery;
+
+
+SELECT 
+    p.summonerName,
+    AVG(p.killParticipation) AS avg_kda
+FROM Participants p
+INNER JOIN Matches m ON p.matchID = m.matchID
+WHERE p.summonerName IN (@participant1, @participant2)
+GROUP BY p.summonerName
+HAVING COUNT(DISTINCT p.matchID) = 1;
+
+
+DECLARE @participant1 VARCHAR(255) = 'AYD Anarchy';
+DECLARE @participant2 VARCHAR(255) = 'AYD Trash';
+
+SELECT 
+    p.summonerName,
+    AVG(p.killParticipation) as avg_kda
+FROM Participants p
+INNER JOIN Matches m ON p.matchID = m.matchID
+WHERE p.summonerName IN (@participant1, @participant2)
+AND EXISTS (
+    SELECT 1
+    FROM Participants p1
+    INNER JOIN Participants p2 ON p1.matchID = p2.matchID
+    INNER JOIN Matches m ON p1.matchID = m.matchID
+    WHERE p1.summonerName = @participant1
+    AND p2.summonerName = @participant2 
+    AND p1.teamID = p2.teamID
+    AND p1.matchID = p.matchID
+)
+GROUP BY p.summonerName
+
+SELECT 
+            p.summonerName,
+            AVG(p.totalDamageDealtToChampions) as avg_kda
+        FROM Participants p
+        INNER JOIN Matches m ON p.matchID = m.matchID
+        WHERE p.summonerName IN (@participant1, @participant2)
+        AND EXISTS (
+            SELECT 1
+            FROM Participants p1
+            INNER JOIN Participants p2 ON p1.matchID = p2.matchID
+            INNER JOIN Matches m ON p1.matchID = m.matchID
+            WHERE p1.summonerName = @participant1
+            AND p2.summonerName = @participant2
+            AND p1.teamID = p2.teamID
+            AND p1.matchID = p.matchID
+        )
+        GROUP BY p.summonerName;
+
+		
+DECLARE @participant1 VARCHAR(255) = 'AYD Anarchy';
+DECLARE @participant2 VARCHAR(255) = 'AYD Trash';
+
+SELECT 
+    p.summonerName,
+    AVG(p.totalDamageDealtToChampions * 60.0 / m.matchDuration) as avg_damage_per_minute
+FROM Participants p
+INNER JOIN Matches m ON p.matchID = m.matchID
+WHERE p.summonerName IN (@participant1, @participant2)
+GROUP BY p.summonerName;
+
+
+SELECT 
+        p.summonerName,
+        AVG(p.totalDamageDealtToChampions / (m.matchDuration / 60.0)) as avg_damage_dealt_per_minute
+    FROM Participants p
+    INNER JOIN Matches m ON p.matchID = m.matchID
+    WHERE p.summonerName IN (@participant1, @participant2)
+    AND EXISTS (
+        SELECT 1
+        FROM Participants p1
+        INNER JOIN Participants p2 ON p1.matchID = p2.matchID
+        INNER JOIN Matches m ON p1.matchID = m.matchID
+        WHERE p1.summonerName = @participant1
+        AND p2.summonerName = @participant2
+        AND p1.teamID = p2.teamID
+        AND p1.matchID = p.matchID
+    )
+    GROUP BY p.summonerName;
+
+SELECT 
+    m.matchID,
+    m.matchDuration,
+    MAX(CASE WHEN p.summonerName = @participant1 THEN p.totalDamageDealtToChampions ELSE NULL END) AS totalDamageDealtToChampions_p1,
+    MAX(CASE WHEN p.summonerName = @participant2 THEN p.totalDamageDealtToChampions ELSE NULL END) AS totalDamageDealtToChampions_p2
+FROM Participants p
+INNER JOIN Matches m ON p.matchID = m.matchID
+WHERE p.summonerName IN (@participant1, @participant2)
+GROUP BY m.matchID, m.matchDuration;
+
+DECLARE @participant1 VARCHAR(255) = 'AYD Anarchy';
+DECLARE @participant2 VARCHAR(255) = 'AYD Trash';
+
+SELECT 
+    p.summonerName,
+    AVG(p.physicalDamageDealtToChampions) as avg_physical_damage_dealt,
+    AVG(p.magicDamageDealtToChampions) as avg_magic_damage_dealt,
+    AVG(p.trueDamageDealtToChampions) as avg_true_damage_dealt
+FROM Participants p
+INNER JOIN Matches m ON p.matchID = m.matchID
+WHERE p.summonerName IN (@participant1, @participant2)
+GROUP BY p.summonerName;
+
+
+SELECT 
+    p.summonerName,
+    AVG(p.physicalDamageDealtToChampions) as avg_physical_damage,
+    AVG(p.magicDamageDealtToChampions) as avg_magic_damage,
+    AVG(p.trueDamageDealtToChampions) as avg_true_damage
+FROM Participants p
+INNER JOIN Matches m ON p.matchID = m.matchID
+WHERE p.summonerName IN (@participant1, @participant2)
+AND EXISTS (
+    SELECT 1
+    FROM Participants p1
+    INNER JOIN Participants p2 ON p1.matchID = p2.matchID
+    INNER JOIN Matches m ON p1.matchID = m.matchID
+    WHERE p1.summonerName = @participant1
+    AND p2.summonerName = @participant2
+    AND p1.teamID = p2.teamID
+    AND p1.matchID = p.matchID
+)
+GROUP BY p.summonerName;
