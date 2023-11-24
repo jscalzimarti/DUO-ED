@@ -1,0 +1,186 @@
+body{
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    min-height: 95vh;
+    font-family: Arial, sans-serif;
+}
+
+footer {
+    margin-top: auto;
+    color: white;
+    text-align: center;
+}
+
+.banner{
+    background-color: #1AA7EC; /* Change this to your preferred color */
+    padding: 60px;
+    display:flex;
+    height: 25px;
+    align-items: center;
+    color: blue;
+    font-size: 25px;
+}
+
+.uNav {
+    display: flex;
+    margin-left: 650px;
+}
+
+.uNav a {
+    margin-left: 20px;
+    color: blue; /* Change the color of the text */
+    text-decoration: none; /* Removes the underline */
+    padding: 10px; /* Adds some space around the links */
+    display: inline-block; /* Aligns the links in one line */
+    border: 2px solid gold; /* Adds a border */
+    border-radius: 10px; /* Rounds the corners */
+    padding: 10px; /* Adds some space inside the box */
+}
+
+.uNav a:hover, .genNav span:hover {
+    background-color: gold; /* Changes the background color when you hover over the link */
+    color: blue; /* Changes the text color when you hover over the link */
+}
+
+.generalNav {
+    display: flex;
+    position: relative;
+    justify-content: space-between; /* Adjusts the spacing between the nav and description */
+}
+
+.description {
+    margin: auto 0; /* Vertically centers the nav and description */
+}
+.genNav {
+    margin-bottom: auto; /* Vertically centers the nav and table */
+}
+
+.genNav a{
+    width: 200px;
+    font-size:25px;
+    display: block;
+    color: blue; /* Change the color of the text */
+    text-decoration: none; /* Removes the underline */
+    padding: 10px;
+    margin-top:10px;
+    margin-bottom:10px;
+    /*margin-right:100px;*/
+}
+
+.genNav span{
+    border: 2px solid gold; /* Adds a border */
+    border-radius: 10px; /* Rounds the corners */
+    padding: 10px; /* Adds some space inside the box */
+}
+
+.description{
+    color: black;
+    font-size: 30px;
+    margin-right: 100px;
+    margin-left:100px;
+}
+
+.signup{
+    color: black;
+    margin-left: 300px;
+}
+.login{
+    color: black;
+    margin-left: 400px;
+}
+.signup label, .login label{
+    font-size: 40px;
+}
+.signup h1,.login h1{
+    text-align: center;
+    font-size: 40px;
+}
+.navbars {
+    display: flex;
+}
+
+.signup {
+    margin: auto 10; /* Vertically centers the nav and signup */
+}
+.login {
+    margin: auto 10; /* Vertically centers the nav and signup */
+}
+
+.accountinfo{
+    font-size: 37px;
+    color:black;
+    margin: auto;
+}
+
+.accountinfo td{
+    /*border-right: 2px solid blue;*/
+}
+
+.genNav {
+    background-color: #008ECC;
+}
+
+.dropdown {
+    position: relative;
+    /*display: flex;
+    flex-direction: column;*/
+    width: 250px; /* Adjust this value to match the width of your dropdown content */
+  }
+  
+
+.dropdown-content {
+    display: none;
+    min-width: 160px;
+    z-index: 1;
+}
+  
+.dropbtn {
+    order: 1;
+} 
+
+.dropdown-content {
+    order: 2;
+}
+
+.dropdown-content a {
+  color: blue;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+.logo {
+    width: 200px; /* Set the width */
+    height: 100px; /* Set the height */
+}
+  
+.circle {
+    position: relative;
+    width: 90px;
+    height: 90px;
+}
+
+.number {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 15px;
+    font-weight: bold;
+}
+
+.progress-ring__circle {
+    transition: 0.35s stroke-dashoffset;
+    transform: rotate(-90deg);
+    transform-origin: 50% 50%;
+}
+.row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

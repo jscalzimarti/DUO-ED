@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>DUOED</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="bodyContainer">
+        <header>
+            <div class="banner">
+                <img src="{{ url_for('static', filename='LeagueMetricsLogo.png') }}" alt="League Metrics Logo" class="logo">
+                {% if username %}
+                    <nav class="uNav">
+                        <span>{{ username }}</span>
+                        <a href="{{ url_for('logout') }}">Sign Out</a>
+                    </nav>
+                {% else %}
+                    <nav class="uNav">
+                        <a href="login">Login</a>
+                        <a href="signup">Sign Up</a>
+                    </nav>
+                {% endif %}
+            </div>
+            <!--<p class="loginName">Login Name goes here</p>-->
+            <main>
+                <div class="navbars">
+                    <div class="generalNav">
+                        <nav class="genNav">
+                            <a href="{{ url_for('home') }}"><span>Home</span></a>
+                            <a href="{{ url_for('about') }}"><span>About</span></a>
+                            <a href="{{ url_for('account') }}"><span>Account</span></a>
+                            <a href="{{ url_for('lookup_duo') }}"><span>Lookup Duo</span></a>
+                            <a href="{{ url_for('lookup_team') }}"><span>Lookup Team</span></a>
+                            <a href="{{ url_for('self_stat') }}"><span>Lookup Stats</span></a>
+                        </nav>
+                    </div>
+                    <table class="accountinfo">
+                        <!--<h1>Duo Statistics</h1>-->
+                        <tr>
+                            <td></td>
+                            <td>{{ username }}</td>
+                            <td>Together</td>
+                            <td>Team</td>
+                        </tr>
+                        <tr>
+                            <td>Games Played</td>
+                            <td>
+                                <div class="circle">
+                                    <svg class="progress-ring" width="90" height="90">
+                                        <circle class="progress-ring__circle" stroke="blue" stroke-width="3" fill="transparent" r="44" cx="45" cy="45"></circle>
+                                    </svg>
+                                    <span class="number">50%</span>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="circle">
+                                    <svg class="progress-ring" width="90" height="90">
+                                        <circle class="progress-ring__circle" stroke="blue" stroke-width="3" fill="transparent" r="44" cx="45" cy="45"></circle>
+                                    </svg>
+                                    <span class="number">50%</span>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="circle">
+                                    <svg class="progress-ring" width="90" height="90">
+                                        <circle class="progress-ring__circle" stroke="blue" stroke-width="3" fill="transparent" r="44" cx="45" cy="45"></circle>
+                                    </svg>
+                                    <span class="number">50%</span>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Winrate</td>
+                            <td>
+                                <div class="circle">
+                                    <svg class="progress-ring" width="90" height="90">
+                                        <circle class="progress-ring__circle" stroke="blue" stroke-width="3" fill="transparent" r="44" cx="45" cy="45"></circle>
+                                    </svg>
+                                    <span class="number">50%</span>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="circle">
+                                    <svg class="progress-ring" width="90" height="90">
+                                        <circle class="progress-ring__circle" stroke="blue" stroke-width="3" fill="transparent" r="44" cx="45" cy="45"></circle>
+                                    </svg>
+                                    <span class="number">50%</span>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="circle">
+                                    <svg class="progress-ring" width="90" height="90">
+                                        <circle class="progress-ring__circle" stroke="blue" stroke-width="3" fill="transparent" r="44" cx="45" cy="45"></circle>
+                                    </svg>
+                                    <span class="number">50%</span>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>KDA</td>
+                            <td>
+                                <div class="circle">
+                                    <svg class="progress-ring" width="90" height="90">
+                                        <circle class="progress-ring__circle" stroke="blue" stroke-width="3" fill="transparent" r="44" cx="45" cy="45"></circle>
+                                    </svg>
+                                    <span class="number">50%</span>
+                                </div>
+                            </td>
+                            <td class="row">
+                                <div class="circle">
+                                    <svg class="progress-ring" width="90" height="90">
+                                        <circle class="progress-ring__circle" stroke="blue" stroke-width="3" fill="transparent" r="44" cx="45" cy="45"></circle>
+                                    </svg>
+                                    <span class="number">50%</span>
+                                </div>
+                                
+                                <div class="circle">
+                                    <svg class="progress-ring" width="90" height="90">
+                                        <circle class="progress-ring__circle" stroke="blue" stroke-width="3" fill="transparent" r="44" cx="45" cy="45"></circle>
+                                    </svg>
+                                    <span class="number">50%</span>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="circle">
+                                    <svg class="progress-ring" width="90" height="90">
+                                        <circle class="progress-ring__circle" stroke="blue" stroke-width="3" fill="transparent" r="44" cx="45" cy="45"></circle>
+                                    </svg>
+                                    <span class="number">50%</span>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Kill Participation</td>
+                            <td>
+                                <div class="circle">
+                                    <svg class="progress-ring" width="90" height="90">
+                                        <circle class="progress-ring__circle" stroke="blue" stroke-width="3" fill="transparent" r="44" cx="45" cy="45"></circle>
+                                    </svg>
+                                    <span class="number">50%</span>
+                                </div>
+                            </td>
+                            <td class="row">
+                                <div class="circle">
+                                    <svg class="progress-ring" width="90" height="90">
+                                        <circle class="progress-ring__circle" stroke="blue" stroke-width="3" fill="transparent" r="44" cx="45" cy="45"></circle>
+                                    </svg>
+                                    <span class="number">50%</span>
+                                </div>
+                                
+                                <div class="circle">
+                                    <svg class="progress-ring" width="90" height="90">
+                                        <circle class="progress-ring__circle" stroke="blue" stroke-width="3" fill="transparent" r="44" cx="45" cy="45"></circle>
+                                    </svg>
+                                    <span class="number">50%</span>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="circle">
+                                    <svg class="progress-ring" width="90" height="90">
+                                        <circle class="progress-ring__circle" stroke="blue" stroke-width="3" fill="transparent" r="44" cx="45" cy="45"></circle>
+                                    </svg>
+                                    <span class="number">50%</span>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Avg Damage Delt</td>
+                            <td>
+                                <div class="circle">
+                                    <svg class="progress-ring" width="90" height="90">
+                                        <circle class="progress-ring__circle" stroke="blue" stroke-width="3" fill="transparent" r="44" cx="45" cy="45"></circle>
+                                    </svg>
+                                    <span class="number">50%</span>
+                                </div>
+                            </td>
+                            <td class="row">
+                                <div class="circle">
+                                    <svg class="progress-ring" width="90" height="90">
+                                        <circle class="progress-ring__circle" stroke="blue" stroke-width="3" fill="transparent" r="44" cx="45" cy="45"></circle>
+                                    </svg>
+                                    <span class="number">50%</span>
+                                </div>
+                                
+                                <div class="circle">
+                                    <svg class="progress-ring" width="90" height="90">
+                                        <circle class="progress-ring__circle" stroke="blue" stroke-width="3" fill="transparent" r="44" cx="45" cy="45"></circle>
+                                    </svg>
+                                    <span class="number">50%</span>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="circle">
+                                    <svg class="progress-ring" width="90" height="90">
+                                        <circle class="progress-ring__circle" stroke="blue" stroke-width="3" fill="transparent" r="44" cx="45" cy="45"></circle>
+                                    </svg>
+                                    <span class="number">50%</span>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Damage Per Minute</td>
+                            <td>
+                                <div class="circle">
+                                    <svg class="progress-ring" width="90" height="90">
+                                        <circle class="progress-ring__circle" stroke="blue" stroke-width="3" fill="transparent" r="44" cx="45" cy="45"></circle>
+                                    </svg>
+                                    <span class="number">50%</span>
+                                </div>
+                            </td>
+                            <td class="row">
+                                <div class="circle">
+                                    <svg class="progress-ring" width="90" height="90">
+                                        <circle class="progress-ring__circle" stroke="blue" stroke-width="3" fill="transparent" r="44" cx="45" cy="45"></circle>
+                                    </svg>
+                                    <span class="number">50%</span>
+                                </div>
+                                
+                                <div class="circle">
+                                    <svg class="progress-ring" width="90" height="90">
+                                        <circle class="progress-ring__circle" stroke="blue" stroke-width="3" fill="transparent" r="44" cx="45" cy="45"></circle>
+                                    </svg>
+                                    <span class="number">50%</span>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="circle">
+                                    <svg class="progress-ring" width="90" height="90">
+                                        <circle class="progress-ring__circle" stroke="blue" stroke-width="3" fill="transparent" r="44" cx="45" cy="45"></circle>
+                                    </svg>
+                                    <span class="number">50%</span>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                    
+                </div>
+        
+                
+                
+                
+                <script>
+                    var radius = 44;
+                    var circumference = 2 * Math.PI * radius;
+                    var progress = document.querySelectorAll('.progress-ring__circle');
+                    progress.forEach(function(circle) {
+                        circle.style.strokeDasharray = `${circumference} ${circumference}`;
+                        circle.style.strokeDashoffset = `${circumference}`;
+                
+                        function setProgress(percent) {
+                            const offset = circumference - percent / 100 * circumference;
+                            circle.style.strokeDashoffset = offset;
+                        }
+                
+                        setProgress(50); // Set this to the percentage you want.
+                    });
+                </script>
+            </main>
+        </header>
+    </div>
+    
+  <footer>&copy;DUOED</footer>
+  <script src="script.js"></script>
+</body>
+</html>

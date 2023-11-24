@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>DUOED</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="bodyContainer">
+        <header>
+            <div class="banner">
+                <img src="{{ url_for('static', filename='LeagueMetricsLogo.png') }}" alt="League Metrics Logo" class="logo">
+                <div class="userNav">
+                    <nav class="uNav">
+                        <a href="login">Login</a>
+                        <a href="signup">Sign Up</a>
+                    </nav>
+                </div>
+            </div>
+            <!--<p class="loginName">Login Name goes here</p>-->
+            <div class="navbars">
+                <div class="generalNav">
+                    <nav class="genNav">
+                        <a href="{{ url_for('home') }}"><span>Home</span></a>
+                        <a href="{{ url_for('about') }}"><span>About</span></a>
+                        <a href="{{ url_for('account') }}"><span>Account</span></a>
+                        <a href="{{ url_for('lookup_duo') }}"><span>Lookup Duo</span></a>
+                        <a href="{{ url_for('lookup_team') }}"><span>Lookup Team</span></a>
+                        <a href="{{ url_for('self_stat') }}"><span>Lookup Stats</span></a>
+                    </nav>
+                </div>
+                <section class="login">
+                    <h1>Login</h1>
+                    <form method="POST" action="/login">
+                        <label for="username">Username: </label>
+                        <input type="text" id="username" name="username" required>
+                        <br>
+                        <label for="password">Password: </label>
+                        <input type="password" id="password" name="password" required>
+                        <br>
+                        <div id="error-message" style="color: red;">
+                            {{ error_message }}  
+                        </div>
+                        <label>Submit: </label>
+                        <input type="submit" value="Login">
+                    </form>
+                </section >
+            </div>
+        </header>
+    </div>
+    <article>
+    </article>
+  <main>
+  </main>
+  <footer>&copy;DUOED</footer>
+  <script>
+  </script>
+</body>
+</html>

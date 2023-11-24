@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body, main {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        img {
+            max-width: 25%; /* Shrink the image by 25% /
+            max-height: 25%; / Shrink the image by 25% /
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            font-size: 24px; / Adjust the font size */
+        }
+    </style>
+    <script>
+        window.onload = function() {
+            // Redirect to process_login route after a short delay
+            setTimeout(function() {
+                window.location.href = "{{ url_for('process_login', username=username) }}";
+            }, 1000); // Delay of 1 second
+        };
+    </script>
+</head>
+<body>
+    <img src="{{ url_for('static', filename='loading-load.gif') }}" alt="Loading...">
+</body>
+<footer>
+    <p>Loading, this may take a few minutes</p>
+</footer>
+</html>
