@@ -5,12 +5,12 @@ import os
 # imports from other python files (i.e. Functions and Variables)
 from user_conditions import username_conditions, invalid_username_conditions, password_conditions, invalid_password_conditions
 from condition_functions import check_username_conditions, check_password_conditions
-from test17 import api_calls, preview_database, query_database
+from test17 import api_calls, preview_database
 
 app = Flask(__name__)
 
 app.secret_key = os.urandom(24)
-apiKey = 'RGAPI-013205c4-5b24-4e61-aad8-713ea0b59730'
+apiKey = 'RGAPI-6ed553fd-6357-4822-ad46-4d96813d69a6'
 region = 'na1'
 participants = 'AYD Trash', 'AYD Anarchy'
 summonerName = participants[0]
@@ -21,6 +21,21 @@ conn = pyodbc.connect('Driver={SQL Server};'
                       'Trusted_Connection=yes;')
 
 cursor = conn.cursor()
+
+def query_database(league_account):
+    # SQL query to find number of matches league_account played
+    cursor.execute('''
+        select m.*
+        from dbo.Matches m
+        inner join Participants p on m.matchID = p.matchID
+        where p.summonerName = ?
+    ''', league_account)
+
+    # Fetch the results
+    matches = cursor.fetchall()
+    
+    return matches
+
 
 def create_users_table():
     cursor = conn.cursor()
@@ -159,9 +174,21 @@ def lookup_team():
 def self_stat():
     if 'logged_in' in session and session['logged_in']:
         league_account = session.get('username', None)
-        return render_template('self_stat.html', username=league_account)
+        
+        # Fetch user data from your database
+        matches = query_database(league_account)
+        
+        if matches:
+            games_played = len(matches)
+        else:
+            games_played = 0  # or any default value
+        
+        return render_template('self_stat.html', username=league_account, games_played=games_played)
     else:
         return render_template('self_stat.html')
+
+
+
 
 @app.route("/loading")
 def loading():
@@ -172,7 +199,7 @@ def process_login(username):
     # Move your background functions here
     api_calls(summonerName, region, apiKey)
     preview_database()
-    query_database()
+    query_database(username)
     return redirect(url_for('home'))\
 
 if __name__ == '__main__':

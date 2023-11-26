@@ -108,12 +108,14 @@ footer {
 }
 
 .accountinfo{
-    font-size: 37px;
+    font-size: 25px;
     color:black;
     margin: auto;
 }
 
 .accountinfo td{
+    border-right: 2px solid gold;
+    padding-inline: 20px;
     /*border-right: 2px solid blue;*/
 }
 
@@ -184,3 +186,7 @@ footer {
     justify-content: center;
     align-items: center;
 }
+.player{
+    width: 50px;
+}
+

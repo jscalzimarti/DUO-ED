@@ -39,12 +39,25 @@
                     
                     <table class="accountinfo">
                         <!--<h1>Duo Statistics</h1>-->
+                        
                         <tr>
                             <td></td>
-                            <td>{{ username }}</td>
-                            <td>Together</td>
-                            <td>Player2</td>
+                            <td class="player" id="username">{{ username }}</td>
+                            <td class="player">Together</td>
+                            <td class="player">Player2</td>
                         </tr>
+                        <script>
+                            window.onload = function () {
+                                var player = document.getElementById('username');
+                                var containerWidth = player.clientWidth; // Get the width of the container
+                                var fontSize = 25; // Set the initial font size
+                        
+                                while (player.getBoundingClientRect().width > containerWidth) {
+                                    fontSize--; // Decrease the font size
+                                    player.style.fontSize = fontSize + 'px';
+                                }
+                            }
+                        </script>
                         <tr>
                             <td>Games Played</td>
                             <td>
@@ -154,7 +167,7 @@
                             </td>
                         </tr>
                         <tr>
-                            <td>Avg Damage Delt</td>
+                            <td>Avg Damage Dealt</td>
                             <td>
                                 <div class="circle">
                                     <svg class="progress-ring" width="90" height="90">
