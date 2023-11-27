@@ -1,7 +1,9 @@
 from flask import Flask, render_template, request, redirect, url_for, session
 import pyodbc
+import sys
 import os
 
+from solo_query import soloStats
 # imports from other python files (i.e. Functions and Variables)
 from user_conditions import username_conditions, invalid_username_conditions, password_conditions, invalid_password_conditions
 from condition_functions import check_username_conditions, check_password_conditions
@@ -23,89 +25,6 @@ conn = pyodbc.connect('Driver={SQL Server};'
 
 cursor = conn.cursor()
 
-def matchCount(league_account):
-    # SQL query to find number of matches league_account played
-    cursor.execute("SELECT COUNT(*) FROM dbo.Participants where summonerName = ?", league_account)
-
-    # Fetch the results
-    matches = cursor.fetchall()
-
-    print(matches)
-
-    return matches
-
-
- # SQL query to find the winrate of two players when playing togeather (non rounded)
-
-def winRate(league_account):
-    cursor.execute('''
-        SELECT 
-            (COUNT(CASE WHEN p1.teamID = m.matchResult THEN 1 END) * 100.0) / NULLIF(COUNT(*), 0) as winrate_percentage
-        FROM Participants p1
-        INNER JOIN Matches m ON p1.matchID = m.matchID
-        WHERE p1.summonerName = ?
-    ''', league_account)
-
-    winrate_solo = cursor.fetchall()
-
-    return winrate_solo
-
-
-def killDeathAssist(league_account):
-    #SQL query to find the average KDA of both players
-    cursor.execute('''
-        SELECT 
-        AVG(p.kda) as avg_kda
-    FROM Participants p
-    INNER JOIN Matches m ON p.matchID = m.matchID
-    WHERE p.summonerName = ?
-    ''', league_account)
-
-    avg_kda = cursor.fetchall()
-
-    return avg_kda
-
-def killParticipation(league_account):
-    #SQL query to find the average KDA of both players
-    cursor.execute('''
-        SELECT 
-        AVG(p.killParticipation) as kill_participation
-    FROM Participants p
-    INNER JOIN Matches m ON p.matchID = m.matchID
-    WHERE p.summonerName = ?
-    ''', league_account)
-
-    kill_participation = cursor.fetchall()
-
-    return kill_participation
-
-def avgDamageDealtToChampions(league_account):
-    #SQL query to find the average KDA of both players
-    cursor.execute('''
-        SELECT 
-            AVG(p.totalDamageDealtToChampions) as avg_total_damage_dealt_to_champions
-        FROM Participants p
-        INNER JOIN Matches m ON p.matchID = m.matchID
-        WHERE p.summonerName = ?
-    ''', league_account)
-
-    avg_damage_dealt_to_champions = cursor.fetchall()
-
-    return avg_damage_dealt_to_champions
-
-def avgDamageDealtPerMinute(league_account):
-    #SQL query to find the average KDA of both players
-    cursor.execute('''
-        SELECT 
-            AVG(p.totalDamageDealtToChampions * 60.0 / m.matchDuration) as avg_damage_dealt_per_minute 
-        FROM Participants p
-        INNER JOIN Matches m ON p.matchID = m.matchID
-        WHERE p.summonerName = ?
-    ''', league_account)
-
-    avg_damage_dealt_per_minute = cursor.fetchall()
-
-    return avg_damage_dealt_per_minute 
 
 def create_users_table():
     cursor = conn.cursor()
@@ -245,50 +164,12 @@ def self_stat():
     if 'logged_in' in session and session['logged_in']:
         league_account = session.get('league_account', None)
         username = session.get('username', None)
-        # Fetch user data from your database
-        matches = matchCount(league_account)
-        win_rate = winRate(league_account)
-        avg_kda = killDeathAssist(league_account)
-        kill_participation = killParticipation(league_account)
-        avg_damage_dealt_to_champions = avgDamageDealtToChampions(league_account)
-        avg_damage_dealt_per_minute = avgDamageDealtPerMinute(league_account)
 
-        if avg_damage_dealt_per_minute:
-            avg_damage_dealt_per_minute = avg_damage_dealt_per_minute[0][0]
-        else:
-            avg_damage_dealt_per_minute = 0
-
-        if avg_damage_dealt_to_champions:
-            avg_damage_dealt_to_champions = avg_damage_dealt_to_champions[0][0]
-        else:
-            avg_damage_dealt_to_champions = 0
+        games_played, win_rate, avg_kda, kill_participation, avg_damage_dealt_to_champions, avg_damage_dealt_per_minute = soloStats(league_account)
         
-
-        if kill_participation:
-            kill_participation = kill_participation[0][0]
-        else:
-            kill_participation = 0
-        if avg_kda:
-            avg_kda = avg_kda[0][0]
-        else:
-            avg_kda = 0 
-
-        if win_rate:
-            win_rate = win_rate[0][0]
-        else:
-            win_rate = 0 
-
-        if matches:
-            games_played = matches[0][0]
-        else:
-            games_played = 0  # or any default value
-        
-        return render_template('self_stat.html', username=username, league_account=league_account, games_played=games_played, win_rate= round(win_rate,2), avg_kda= round(avg_kda,2), kill_participation= round(kill_participation,2), avg_damage_dealt_to_champions=avg_damage_dealt_to_champions, avg_damage_dealt_per_minute=round(avg_damage_dealt_per_minute,2))
+        return render_template('self_stat.html', username=username, league_account=league_account, games_played=games_played, win_rate= round(win_rate,2), avg_kda= round(avg_kda,2), kill_participation= round(kill_participation,2), avg_damage_dealt_to_champions=avg_damage_dealt_to_champions, avg_damage_dealt_per_minute= avg_damage_dealt_per_minute)
     else:
         return render_template('self_stat.html')
-
-
-
 
 @app.route("/loading")
 def loading():
