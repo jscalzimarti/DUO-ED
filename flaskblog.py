@@ -4,6 +4,7 @@ import sys
 import os
 
 from solo_query import soloStats
+from duo_query import duoStats
 # imports from other python files (i.e. Functions and Variables)
 from user_conditions import username_conditions, invalid_username_conditions, password_conditions, invalid_password_conditions
 from condition_functions import check_username_conditions, check_password_conditions
@@ -13,7 +14,7 @@ from test17 import api_calls, preview_database, query_database
 app = Flask(__name__)
 
 app.secret_key = os.urandom(24)
-apiKey = 'RGAPI-6ed553fd-6357-4822-ad46-4d96813d69a6'
+apiKey = 'RGAPI-190d259c-904a-402c-a35f-dc155834c5f6'
 region = 'na1'
 participants = 'AYD Trash', 'AYD Anarchy'
 summonerName = participants[0]
@@ -127,8 +128,7 @@ def login():
         
         cursor.execute("SELECT username, password, email, gamertag FROM users WHERE Username = ? AND Password = ?", (username, password))         
         result = cursor.fetchall()         
-        if user: 
-                       
+        if user:      
             session['logged_in'] = True             
             session['email'] = result[0][2]             
             session['username'] = result[0][0]             
@@ -143,13 +143,27 @@ def login():
         return render_template('login.html', error_message=error_message)
 
 
-@app.route("/lookup_duo")
+@app.route("/lookup_duo", methods=['GET', 'POST'])
 def lookup_duo():
-    if 'logged_in' in session and session['logged_in']:
-        league_account = session.get('username', None)
-        return render_template('lookup_duo.html', username=league_account)
+    if request.method == 'POST':
+        if 'logged_in' in session and session['logged_in']:
+            league_account = session.get('league_account', None)
+            username = session.get('username', None)
+            teammate = request.form['teammate']
+            games_played_p2, win_rate_p2, avg_kda_p2, kill_participation_p2, avg_damage_dealt_to_champions_p2, avg_damage_dealt_per_minute_p2 = soloStats(teammate)
+            games_played, win_rate, avg_kda, kill_participation, avg_damage_dealt_to_champions, avg_damage_dealt_per_minute = soloStats(league_account)
+            games_played_duo, win_rate_duo, avg_kda_duo, kill_participation_duo, avg_damage_dealt_to_champions_duo, avg_damage_dealt_per_minute_duo = duoStats(league_account, teammate)
+            return render_template('lookup_duo.html', username=username, league_account=league_account, games_played=games_played, win_rate= round(win_rate,2), avg_kda= round(avg_kda,2), kill_participation= round(kill_participation,2), avg_damage_dealt_to_champions=avg_damage_dealt_to_champions, avg_damage_dealt_per_minute= avg_damage_dealt_per_minute, games_played_p2=games_played_p2, win_rate_p2= round(win_rate_p2,2), avg_kda_p2= round(avg_kda_p2,2), kill_participation_p2= round(kill_participation_p2,2), avg_damage_dealt_to_champions_p2=avg_damage_dealt_to_champions_p2, avg_damage_dealt_per_minute_p2= avg_damage_dealt_per_minute_p2,  games_played_duo=games_played_duo, win_rate_duo= round(win_rate_duo,2), avg_kda_duo= round(avg_kda_duo,2), kill_participation_duo= round(kill_participation_duo,2), avg_damage_dealt_to_champions_duo=avg_damage_dealt_to_champions_duo, avg_damage_dealt_per_minute_duo= avg_damage_dealt_per_minute_duo)
     else:
-        return render_template('lookup_duo.html')
+        if 'logged_in' in session and session['logged_in']:
+            league_account = session.get('league_account', None)
+            username = session.get('username', None)
+
+            games_played, win_rate, avg_kda, kill_participation, avg_damage_dealt_to_champions, avg_damage_dealt_per_minute = soloStats(league_account)
+            
+            return render_template('lookup_duo.html', username=username, league_account=league_account, games_played=games_played, win_rate= round(win_rate,2), avg_kda= round(avg_kda,2), kill_participation= round(kill_participation,2), avg_damage_dealt_to_champions=avg_damage_dealt_to_champions, avg_damage_dealt_per_minute= avg_damage_dealt_per_minute)
+        else:
+            return render_template('lookup_duo.html')
 
 @app.route("/lookup_team")
 def lookup_team():
