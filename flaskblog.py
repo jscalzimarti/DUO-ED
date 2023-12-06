@@ -14,7 +14,7 @@ from test17 import api_calls, preview_database, query_database
 app = Flask(__name__)
 
 app.secret_key = os.urandom(24)
-apiKey = 'RGAPI-65619428-b79d-4fe2-b104-47861129a421'
+apiKey = ''
 region = 'na1'
 participants = 'AYD Trash', 'AYD Anarchy'
 summonerName = participants[0]
