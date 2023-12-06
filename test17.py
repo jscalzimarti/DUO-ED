@@ -37,7 +37,7 @@ conn = pyodbc.connect('Driver={SQL Server};'
 # Create a cursor to interact with the database
 cursor = conn.cursor()
 
-apiKey = 'RGAPI-013205c4-5b24-4e61-aad8-713ea0b59730'
+apiKey = 'RGAPI-65619428-b79d-4fe2-b104-47861129a421'
 region = 'na1'
 participants = 'AYD Trash', 'AYD Anarchy'
 summonerName = participants[0]

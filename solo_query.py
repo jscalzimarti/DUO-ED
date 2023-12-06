@@ -94,7 +94,7 @@ def soloStats(league_account):
     avg_damage_dealt_per_minute = cursor.fetchall()
 
     if avg_damage_dealt_per_minute:
-        avg_damage_dealt_per_minute = round(avg_damage_dealt_per_minute[0][0])
+        avg_damage_dealt_per_minute = avg_damage_dealt_per_minute[0][0]
     else:
         avg_damage_dealt_per_minute = 0
 

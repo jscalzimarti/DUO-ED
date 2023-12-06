@@ -29,14 +29,18 @@
                     <div class="generalNav">
                         <nav class="genNav">
                             <a href="{{ url_for('home') }}"><span>Home</span></a>
-                            <a href="{{ url_for('about') }}"><span>About</span></a>
                             <a href="{{ url_for('account') }}"><span>Account</span></a>
                             <a href="{{ url_for('lookup_duo') }}"><span>Lookup Duo</span></a>
                             <a href="{{ url_for('lookup_team') }}"><span>Lookup Team</span></a>
                             <a href="{{ url_for('self_stat') }}"><span>Lookup Stats</span></a>
                         </nav>
                     </div>
-                    
+                    <form class="lookup_duo" method="POST" action="/lookup_duo">
+                        <label for="Duo Partner">League of Legends Accont Name: </label><br>
+                        <input type="text" id = "teammate" name = "teammate" required>
+                        <label> </label>
+                        <input type="submit" id="submit">
+                    </form>
                     <table class="accountinfo">
                         <!--<h1>Duo Statistics</h1>-->
                         
@@ -44,7 +48,7 @@
                             <td></td>
                             <td class="player" id="username">{{ username }}</td>
                             <td class="player">Together</td>
-                            <td class="player">Player2</td>
+                            <td class="player">{{ player2 }}</td>
                         </tr>
                         <script>
                             window.onload = function () {
@@ -59,12 +63,6 @@
                             }
                         </script>
                         <tr>
-                            <form method="POST" action="/lookup_duo">
-                                <label for="Duo Partner">League of Legends Accont Name: </label>
-                                <input type="text" id = "teammate" name = "teammate" required>
-                                <label>Submit: </label>
-                                <input type="submit" id="submit">
-                            </form>
                             <td>Games Played</td>
                             <td>
                                 <div class="circle">

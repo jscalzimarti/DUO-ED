@@ -14,7 +14,7 @@ from test17 import api_calls, preview_database, query_database
 app = Flask(__name__)
 
 app.secret_key = os.urandom(24)
-apiKey = 'RGAPI-190d259c-904a-402c-a35f-dc155834c5f6'
+apiKey = 'RGAPI-65619428-b79d-4fe2-b104-47861129a421'
 region = 'na1'
 participants = 'AYD Trash', 'AYD Anarchy'
 summonerName = participants[0]
@@ -153,7 +153,7 @@ def lookup_duo():
             games_played_p2, win_rate_p2, avg_kda_p2, kill_participation_p2, avg_damage_dealt_to_champions_p2, avg_damage_dealt_per_minute_p2 = soloStats(teammate)
             games_played, win_rate, avg_kda, kill_participation, avg_damage_dealt_to_champions, avg_damage_dealt_per_minute = soloStats(league_account)
             games_played_duo, win_rate_duo, avg_kda_duo, kill_participation_duo, avg_damage_dealt_to_champions_duo, avg_damage_dealt_per_minute_duo = duoStats(league_account, teammate)
-            return render_template('lookup_duo.html', username=username, league_account=league_account, games_played=games_played, win_rate= round(win_rate,2), avg_kda= round(avg_kda,2), kill_participation= round(kill_participation,2), avg_damage_dealt_to_champions=avg_damage_dealt_to_champions, avg_damage_dealt_per_minute= avg_damage_dealt_per_minute, games_played_p2=games_played_p2, win_rate_p2= round(win_rate_p2,2), avg_kda_p2= round(avg_kda_p2,2), kill_participation_p2= round(kill_participation_p2,2), avg_damage_dealt_to_champions_p2=avg_damage_dealt_to_champions_p2, avg_damage_dealt_per_minute_p2= avg_damage_dealt_per_minute_p2,  games_played_duo=games_played_duo, win_rate_duo= round(win_rate_duo,2), avg_kda_duo= round(avg_kda_duo,2), kill_participation_duo= round(kill_participation_duo,2), avg_damage_dealt_to_champions_duo=avg_damage_dealt_to_champions_duo, avg_damage_dealt_per_minute_duo= avg_damage_dealt_per_minute_duo)
+            return render_template('lookup_duo.html', player2 = teammate, username=username, league_account=league_account, games_played=games_played, win_rate= round(win_rate,2), avg_kda= round(avg_kda,2), kill_participation= round(kill_participation,2), avg_damage_dealt_to_champions=avg_damage_dealt_to_champions, avg_damage_dealt_per_minute= avg_damage_dealt_per_minute, games_played_p2=games_played_p2, win_rate_p2= round(win_rate_p2,2), avg_kda_p2= round(avg_kda_p2,2), kill_participation_p2= round(kill_participation_p2,2), avg_damage_dealt_to_champions_p2=avg_damage_dealt_to_champions_p2, avg_damage_dealt_per_minute_p2= avg_damage_dealt_per_minute_p2,  games_played_duo=games_played_duo, win_rate_duo= round(win_rate_duo,2), avg_kda_duo= round(avg_kda_duo,2), kill_participation_duo= round(kill_participation_duo,2), avg_damage_dealt_to_champions_duo=avg_damage_dealt_to_champions_duo, avg_damage_dealt_per_minute_duo= avg_damage_dealt_per_minute_duo)
     else:
         if 'logged_in' in session and session['logged_in']:
             league_account = session.get('league_account', None)

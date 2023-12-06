@@ -189,4 +189,9 @@ footer {
 .player{
     width: 50px;
 }
-
+input#teammate{
+    height:fit-content;
+}
+input#submit{
+    height:fit-content;
+}
